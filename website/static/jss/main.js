@@ -19,5 +19,17 @@ d3.json('feed',  function(error, data) {
                  "<i>" + d['authors'] + "</i>" +
                  "<p>" + d['summary'] + "</p>" +
                  "</div>"
-        })
+        });
+    renderMathInElement(document.body, {
+      // customised options
+      // • auto-render specific keys, e.g.:
+      delimiters: [
+          {left: '$$', right: '$$', display: true},
+          {left: '$', right: '$', display: false},
+          {left: '\\(', right: '\\)', display: false},
+          {left: '\\[', right: '\\]', display: true}
+      ],
+      // • rendering keys, e.g.:
+      throwOnError : false
+    });
 });

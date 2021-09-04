@@ -1,0 +1,10 @@
+SECRET_KEY = 'abcd'
+WTF_CSRF_TIME_LIMIT = 7200
+
+STATIC_URL = 'http://127.0.0.1:8080/static/'
+CDN_DOMAIN = STATIC_URL
+
+SQLALCHEMY_DATABASE_URI = 'sqlite:///../test.db'
+
+MAX_CONTENT_LENGTH = 8 * 1024 * 1024
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}

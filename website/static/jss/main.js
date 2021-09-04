@@ -1,5 +1,4 @@
 d3.json('feed',  function(error, data) {
-    console.log(data);
     var div = d3.select('.list');
     div.selectAll('div')
         .data(data)
@@ -9,11 +8,16 @@ d3.json('feed',  function(error, data) {
         .style('outline', '1px solid black')
         .style('padding', '5px 5px 5px 5px')
         .html(function(d) {
-             return "<img src=\"/static/img/img.png\" alt=\"\" /></div>" +
+            var img = ""
+            if (d['image_url'] != null) {
+                img = "<img src=\"" + d['image_url'] + "\" alt=\"\" />";
+            }
+
+            return img + "</div>" +
                  "<div style='padding: 5px 5px 5px 5px'>" +
-                 "<h3>" + d['title'] + "</h3>" +
-                "<p>" + d['authors'] + "</p>" +
-                "<p>" + d['summary'] + "</p>" +
-                "</div>"
+                 "<a href=\"" + d['url'] + "\" style=\"color:black\"><h3>" + d['title'] + "</h3></a>" +
+                 "<i>" + d['authors'] + "</i>" +
+                 "<p>" + d['summary'] + "</p>" +
+                 "</div>"
         })
 });

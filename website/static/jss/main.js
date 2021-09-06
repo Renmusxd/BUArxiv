@@ -10,7 +10,7 @@ d3.json('feed',  function(error, data) {
         .html(function(d) {
             var img = ""
             if (d['image_url'] != null) {
-                img = "<img src=\"" + d['image_url'] + "\" alt=\"\" />";
+                img = "<img src=\"" + d['image_url'] + "\" alt=\"\" style=\"max-height: 256px; max-width: 256px\"/>";
             }
 
             return img + "</div>" +

@@ -61,11 +61,19 @@ class SQLClient(object):
         if timestamp is None:
             timestamp = datetime.date.today()
         entry = ArxivEntry(id=id, title=title, url=url, summary=summary, timestamp=timestamp, image_url=image_url)
-        print(entry)
         db.session.add(entry)
         db.session.commit()
         return entry
 
+    def edit_by_id(self, id='0', url=None,
+                   title=None, summary=None,
+                   image_url=None):
+        entry = self.get_by_id(id)
+        entry.url = url
+        entry.title = title
+        entry.summary = summary
+        entry.image_url = image_url
+        db.session.commit()
 
 def get_client():
     return SQLClient.get_client()

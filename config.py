@@ -1,3 +1,6 @@
+import os
+
+EDIT_PASSWORD = os.environ['FLASK_EDIT_PASSWORD'] if 'FLASK_EDIT_PASSWORD' in os.environ else 'password'
 SECRET_KEY = 'abcd'
 WTF_CSRF_TIME_LIMIT = 7200
 

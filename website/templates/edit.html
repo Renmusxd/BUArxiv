@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Entry</title>
+</head>
+<body>
+    <form action="{{ url_for('crud.edit', id=entry.id)  }}" method="post" enctype="multipart/form-data" autocomplete="off">
+        {{ editform.csrf_token }}
+        <label for="titlearea">Title</label><br>
+        <input id="titlearea" type="text" name="title" style="width: 100%" value="{{ entry.title }}">
+
+        <label for="authorsarea">Authors</label><br>
+        <textarea id="authorsarea" name="authors" style="width:100%;">{{ entry.authors }}</textarea>
+
+        <label for="post_url">URL</label><br>
+        <input id="post_url" type="text" name="post_url" style="width: 100%" value="{{ entry.url }}">
+
+        <label for="bodyarea">Summary</label><br>
+        <textarea id="bodyarea" name="summary" style="width:100%; min-height: 256px; resize: vertical;">{{ entry.summary }}</textarea>
+
+        <label for="image_url">Image URL</label><br>
+        <input id="image_url" type="text" name="image_url" style="width: 100%" value="{{ entry.image_url if entry.image_url else '' }}">
+
+        <label for="editcode">Edit Code</label><br>
+        <input id="editcode" type="password" name="edit_code" style="width: 100%" value="" autocomplete="new-password">
+
+        <input type="submit" style="width:100%;" value="Submit">
+    </form>
+
+
+    {% for error in errors %}
+        <div class="color: red">{{ error }}</div>
+    {% endfor %}
+
+</body>
+</html>

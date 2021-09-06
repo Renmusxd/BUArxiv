@@ -3,7 +3,7 @@ import logging
 import sys
 
 import flask
-from flask import Flask, Blueprint, send_file, jsonify, render_template, redirect, url_for
+from flask import Flask, Blueprint, send_file, jsonify, render_template, redirect, url_for, abort
 from flask_wtf import CSRFProtect
 
 import config
@@ -73,7 +73,7 @@ def edit(id):
                                errors=errors,
                                editform=EditForm())
     else:
-        return "Not found", 404
+        abort(404)
 
 
 @crud.errorhandler(500)

@@ -25,11 +25,9 @@ d3.json('feed/20',  function(error, data) {
 
             var tagstr = "";
             if (d['tags'] != null) {
-                console.log(d['tags'].split(','));
                 var tags = [...new Set(d['tags'].split(',').map(function(tag) {
-                    return tag.split('.')[0]
-                }))];
-                console.log(tags);
+                    return tag.split('.')[0].trim();
+                }))].sort();
                 tagstr = tags.map(function(tag) {
                     return '<div class="tagdiv-entry">' + tag.trim() + '</div>';
                 }).join('');

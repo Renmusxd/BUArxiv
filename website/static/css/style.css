@@ -1,5 +1,33 @@
-.image-txt-container {
+.list-entry {
   display: flex;
   align-items: center;
   flex-direction: row;
+  width: 512px;
+  min-height: 128px;
+  flex-grow: 1.5;
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  justify-content: flex-start;
+}
+
+.listimg {
+  max-height: 128px;
+  max-width: 128px;
+  padding: 5px 5px 5px 5px;
+}
+
+.tagdiv {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-direction: row;
+}
+
+.tagdiv-entry {
+  font-size: 10px;
+  padding: 5px 5px 5px 5px;
 }

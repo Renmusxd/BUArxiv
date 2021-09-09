@@ -7,6 +7,13 @@
 <body>
     <form action="{{ url_for('crud.edit', id=entry.id)  }}" method="post" enctype="multipart/form-data" autocomplete="off">
         {{ editform.csrf_token }}
+        <h3>Editing {{ entry.id }}</h3>
+
+        <div style="border:1px dotted black;padding:2em;">
+            <label for="editcode">To edit please enter Edit Code</label><br>
+            <input id="editcode" type="password" name="edit_code" style="width: 100%" value="" autocomplete="new-password">
+        </div>
+
         <label for="titlearea">Title</label><br>
         <input id="titlearea" type="text" name="title" style="width: 100%" value="{{ entry.title }}">
 
@@ -16,14 +23,33 @@
         <label for="post_url">URL</label><br>
         <input id="post_url" type="text" name="post_url" style="width: 100%" value="{{ entry.url }}">
 
-        <label for="bodyarea">Summary</label><br>
-        <textarea id="bodyarea" name="summary" style="width:100%; min-height: 256px; resize: vertical;">{{ entry.summary }}</textarea>
+        <label for="summaryarea">Summary</label><br>
+        <textarea id="summaryarea" name="summary" style="width:100%; min-height: 128px; resize: vertical;" placeholder="Short summary">{{ entry.summary if entry.summary else ''  }}</textarea>
+
+        <label for="abstractarea">Abstract</label><br>
+        <textarea id="abstractarea" name="abstract" style="width:100%; min-height: 256px; resize: vertical;" placeholder="Full abstract">{{ entry.abstract }}</textarea>
 
         <label for="image_url">Image URL</label><br>
         <input id="image_url" type="text" name="image_url" style="width: 100%" value="{{ entry.image_url if entry.image_url else '' }}">
 
-        <label for="editcode">Edit Code</label><br>
-        <input id="editcode" type="password" name="edit_code" style="width: 100%" value="" autocomplete="new-password">
+        <label for="image">Image</label><br>
+        <input type="file" name="image" id="image" accept=".png,.jpg,.jpeg,.gif"><br>
+
+        <label for="tags">Tags</label><br>
+        <input id="tags" type="text" name="tags" style="width: 100%" value="{{ entry.tags }}" placeholder="Tags for paper">
+
+        <label for="unstructuredarea">Unstructured</label><br>
+        <textarea id="unstructuredarea" name="unstructured" style="width:100%; min-height: 256px; resize: vertical;" placeholder="Advanced settings">{{ entry.unstructured if entry.unstructured else '' }}</textarea>
+
+        <label for="autoupdate">Overwrite changes on next scrape:</label>
+        <input type="checkbox" id="autoupdate" name="autoupdate">
+
+        <label for="hidden">Hide from feed and edit list:</label>
+        {% if entry.hidden %}
+            <input type="checkbox" id="hidden" name="hidden" checked>
+        {% else %}
+            <input type="checkbox" id="hidden" name="hidden">
+        {% endif %}
 
         <input type="submit" style="width:100%;" value="Submit">
     </form>

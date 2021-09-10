@@ -8,3 +8,4 @@ Werkzeug>=0.12.2
 flask-wtf>=0.15
 #flask-cdn>=1.5.3
 arxiv>=1.4
+gunicorn>=20.1

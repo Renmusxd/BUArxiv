@@ -5,7 +5,7 @@ import sys
 import time
 
 import flask
-from flask import Flask, Blueprint, send_file, jsonify, render_template, redirect, url_for, abort
+from flask import Blueprint, send_file, jsonify, render_template, redirect, url_for, abort
 from flask_wtf import CSRFProtect
 from werkzeug.utils import secure_filename
 import pathlib
@@ -28,7 +28,7 @@ def index():
 
 
 @crud.route('/feed', defaults={'n': 10}, methods=['GET'])
-@crud.route('/feed/<n>', methods=['GET'])
+@crud.route('/feed/<int:n>', methods=['GET'])
 def feed(n):
     entries = get_client().get_last_n(n)
     return jsonify([
@@ -36,7 +36,7 @@ def feed(n):
     ])
 
 
-@crud.route('/last/<days>', methods=['GET'])
+@crud.route('/last/<int:days>', methods=['GET'])
 def last(days):
     entries = get_client().get_in_previous_days(int(days))
     return jsonify([
@@ -51,7 +51,7 @@ def listedits():
     return render_template('editlist.html', entries=entries)
 
 
-@crud.route('/edit/<id>', methods=['GET', 'POST'])
+@crud.route('/edit/<string:id>', methods=['GET', 'POST'])
 def edit(id):
     entry = get_client().get_by_id(id)
     if entry:
@@ -61,7 +61,7 @@ def edit(id):
                 if editform.edit_code.data.strip() == config.EDIT_PASSWORD:
                     if editform.image.data:
                         filename = secure_filename(editform.image.data.filename)
-                        filename = id + pathlib.Path(filename).suffix
+                        filename = id.replace('/', '_') + pathlib.Path(filename).suffix
                         editform.image.data.save(os.path.join(config.SAVE_IMAGE_LOCATION, filename))
                         image_url = config.SAVE_IMAGE_URL_PREFIX + filename
                     else:
@@ -83,7 +83,7 @@ def edit(id):
                 else:
                     errors = ["Invalid edit code"]
             else:
-               errors = editform.errors.values()
+                errors = editform.errors.values()
         else:
             errors = []
         print(errors)
@@ -106,9 +106,9 @@ def new():
         print("Trying id: {}".format(id))
     return redirect(url_for('crud.new_id', id=str(id)))
 
-@crud.route('/new/<id>', methods=['GET', 'POST'])
+
+@crud.route('/new/<string:id>', methods=['GET', 'POST'])
 def new_id(id):
-    id = id.replace('/', '_')
     if get_client().get_by_id(id):
         return "ID Exists: {}".format(flask.escape(id)), 409
     if flask.request.method == 'POST':
@@ -140,6 +140,7 @@ def new_id(id):
                            id=id,
                            errors=errors,
                            newform=NewForm())
+
 
 @crud.errorhandler(500)
 def server_error(e):

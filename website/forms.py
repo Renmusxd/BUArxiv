@@ -1,16 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SelectField, TextAreaField, BooleanField, DateField
-from wtforms.validators import DataRequired
-from flask_wtf.file import FileField, FileRequired
-
-
-class UploadForm(FlaskForm):
-    title = StringField('title')
-    description = FileField('description')
-    body = FileField('body')
-    thumbnail = FileField('thumbnail')
-    resources = FileField('resources')
-    post = SelectField('post')
+from wtforms import StringField, TextAreaField, BooleanField, DateField
+from flask_wtf.file import FileField
 
 
 class NewForm(FlaskForm):

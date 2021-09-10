@@ -104,6 +104,7 @@ class SQLClient(object):
         entry.hidden = hidden
         db.session.commit()
 
+
 def get_client():
     return SQLClient.get_client()
 

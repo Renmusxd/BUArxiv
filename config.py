@@ -1,11 +1,11 @@
 import os
 
 EDIT_PASSWORD = os.environ['FLASK_EDIT_PASSWORD'] if 'FLASK_EDIT_PASSWORD' in os.environ else 'password'
-SECRET_KEY = 'abcd'
+SECRET_KEY = os.environ['FLASK_SECRET_KEY'] if 'FLASK_SECRET_KEY' in os.environ else 'secret'
 WTF_CSRF_TIME_LIMIT = 7200
 
-STATIC_URL = 'http://127.0.0.1:8080/static/'
-CDN_DOMAIN = STATIC_URL
+# STATIC_URL = 'http://127.0.0.1:8080/static/'
+# CDN_DOMAIN = STATIC_URL
 
 SQLALCHEMY_DATABASE_URI = 'sqlite:///../test.db'
 

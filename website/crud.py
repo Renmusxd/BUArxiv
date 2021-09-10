@@ -62,7 +62,7 @@ def edit(id):
                     if editform.image.data:
                         filename = secure_filename(editform.image.data.filename)
                         filename = id + pathlib.Path(filename).suffix
-                        editform.image.data.save(os.path.join(config.SAVE_IMAGE_LOCATION,filename))
+                        editform.image.data.save(os.path.join(config.SAVE_IMAGE_LOCATION, filename))
                         image_url = config.SAVE_IMAGE_URL_PREFIX + filename
                     else:
                         image_url = editform.image_url.data.strip()
@@ -108,8 +108,9 @@ def new():
 
 @crud.route('/new/<id>', methods=['GET', 'POST'])
 def new_id(id):
+    id = id.replace('/', '_')
     if get_client().get_by_id(id):
-        return "ID Exists", 409
+        return "ID Exists: {}".format(flask.escape(id)), 409
     if flask.request.method == 'POST':
         newform = NewForm()
         if newform.validate_on_submit():

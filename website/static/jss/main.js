@@ -5,8 +5,6 @@ d3.json('feed/20',  function(error, data) {
         .enter()
         .append('div')
         .attr('class', 'list-entry')
-        .style('outline', '1px solid black')
-        .style('padding', '5px 5px 5px 5px')
         .html(function(d) {
             var img = "";
             if (d['image_url'] != null) {
@@ -34,8 +32,8 @@ d3.json('feed/20',  function(error, data) {
             }
 
             return img + "</div>" +
-                 "<div style='padding: 5px 5px 5px 5px; flex-grow: 10;'>" +
-                 "<a href=\"" + d['url'] + "\" style=\"color:black\"><h3>" + d['title'] + "</h3></a>" +
+                 "<div class=\"textdiv\">" +
+                 "<a href=\"" + d['url'] + "\"><h3>" + d['title'] + "</h3></a>" +
                  "<i>" + d['authors'] + "</i>" +
                  journal_html +
                  "<p>" + display_summary + "</p>" +

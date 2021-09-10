@@ -1,3 +1,13 @@
+a:link {
+  text-decoration: none;
+  color: black;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: black;
+}
+
 .list-entry {
   display: flex;
   align-items: center;
@@ -5,6 +15,13 @@
   width: 512px;
   min-height: 128px;
   flex-grow: 1.5;
+  outline: 1px solid gray;
+  padding: 5px 5px 5px 5px;
+  margin: 15px 15px 15px 15px;
+}
+
+.list-entry:hover {
+  background-color: #FAFAFA;
 }
 
 .list {
@@ -18,6 +35,11 @@
   max-height: 128px;
   max-width: 128px;
   padding: 5px 5px 5px 5px;
+}
+
+.textdiv {
+  padding: 5px 5px 5px 5px;
+  flex-grow: 10;
 }
 
 .tagdiv {

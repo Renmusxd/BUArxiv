@@ -1,13 +1,26 @@
+from collections import defaultdict
 import arxiv
-import datetime
-from sqlalchemy import create_engine, MetaData
-from sqlalchemy_utils import database_exists, create_database
+import os
+from sqlalchemy import create_engine
+from sqlalchemy_utils import database_exists
 from sqlalchemy.orm import Session
 from website.database import ArxivEntry
 import re
 
 
-def run_scrape(authors, db_file, strip_versions=True):
+def get_authors_and_tags(dir):
+    all_authors = set()
+    author_tags = defaultdict(lambda: list())
+    for filename in os.listdir(dir):
+        with open(os.path.join(dir, filename), 'r') as f:
+            for author in f.readlines():
+                author = author.strip()
+                all_authors.add(author)
+                author_tags[author].append(os.path.splitext(filename)[0])
+    return all_authors, author_tags
+
+
+def run_scrape(authors, author_tags, db_file, strip_versions=True):
     engine = create_engine(db_file, echo=True, future=True)
     if not database_exists(engine.url):
         ArxivEntry.metadata.create_all(engine)
@@ -24,7 +37,7 @@ def run_scrape(authors, db_file, strip_versions=True):
     with Session(engine) as session:
         for author in authors:
             search = arxiv.Search(
-                query="au:{}".format(author.strip()),
+                query="au:{}".format(author),
                 max_results=float('inf'),
                 sort_by=arxiv.SortCriterion.LastUpdatedDate,
             )
@@ -67,6 +80,5 @@ def run_scrape(authors, db_file, strip_versions=True):
 
 
 if __name__ == "__main__":
-    with open('authors.txt', 'r') as f:
-        authors = f.readlines()
-    run_scrape(authors, 'sqlite:///test.db')
+    authors, tags = get_authors_and_tags('authors')
+    run_scrape(authors, tags, 'sqlite:///test.db')

@@ -58,7 +58,7 @@ def edit(id):
         if flask.request.method == 'POST':
             editform = EditForm()
             if editform.validate_on_submit():
-                if editform.edit_code.data.strip() == config.EDIT_PASSWORD:
+                if editform.edit_code.data.strip() == config.EDIT_PASSWORD or not config.EDIT_PASSWORD:
                     if editform.image.data:
                         filename = secure_filename(editform.image.data.filename)
                         filename = id.replace('/', '_') + pathlib.Path(filename).suffix
@@ -86,10 +86,10 @@ def edit(id):
                 errors = editform.errors.values()
         else:
             errors = []
-        print(errors)
         return render_template('edit.html',
                                entry=entry,
                                errors=errors,
+                               needs_edit_code=bool(config.EDIT_PASSWORD),
                                editform=EditForm())
     else:
         abort(404)
@@ -114,7 +114,7 @@ def new_id(id):
     if flask.request.method == 'POST':
         newform = NewForm()
         if newform.validate_on_submit():
-            if newform.edit_code.data.strip() == config.EDIT_PASSWORD:
+            if newform.edit_code.data.strip() == config.EDIT_PASSWORD or not config.EDIT_PASSWORD:
                 print(newform.publishdate.data)
                 get_client().add_entry(id,
                                        title=newform.title.data.strip(),
@@ -139,6 +139,7 @@ def new_id(id):
     return render_template('new.html',
                            id=id,
                            errors=errors,
+                           needs_edit_code=bool(config.EDIT_PASSWORD),
                            newform=NewForm())
 
 

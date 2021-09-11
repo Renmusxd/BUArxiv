@@ -9,10 +9,12 @@
         {{ editform.csrf_token }}
         <h3>Editing {{ entry.id }}</h3>
 
-        <div style="border:1px dotted black;padding:2em;">
-            <label for="editcode">To edit please enter Edit Code</label><br>
-            <input id="editcode" type="password" name="edit_code" style="width: 100%" value="" autocomplete="new-password">
-        </div>
+        {% if needs_edit_code %}
+            <div style="border:1px dotted black;padding:2em;">
+                <label for="editcode">To edit please enter Edit Code</label><br>
+                <input id="editcode" type="password" name="edit_code" style="width: 100%" value="" autocomplete="new-password">
+            </div>
+        {% endif %}
 
         <label for="titlearea">Title</label><br>
         <input id="titlearea" type="text" name="title" style="width: 100%" value="{{ entry.title }}">

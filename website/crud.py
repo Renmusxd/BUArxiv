@@ -22,6 +22,7 @@ csrf = CSRFProtect()
 
 
 @crud.route('/')
+@crud.route('/cmt-arxiv')
 def index():
     """Return a friendly HTTP greeting."""
     return send_file('static/index.html')

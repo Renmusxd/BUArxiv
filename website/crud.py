@@ -5,7 +5,7 @@ import sys
 import time
 
 import flask
-from flask import Blueprint, send_file, jsonify, render_template, redirect, url_for, abort
+from flask import Blueprint, send_file, jsonify, render_template, redirect, url_for, abort, send_from_directory
 from flask_wtf import CSRFProtect
 from werkzeug.utils import secure_filename
 import pathlib
@@ -16,16 +16,19 @@ from website.forms import *
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
-crud = Blueprint('crud', __name__)
+crud = Blueprint('crud', __name__, url_prefix='/cmt-arxiv')
 
 csrf = CSRFProtect()
 
 
 @crud.route('/')
-@crud.route('/cmt-arxiv')
 def index():
     """Return a friendly HTTP greeting."""
     return send_file('static/index.html')
+
+@crud.route('static/<path:path>')
+def send_static(path):
+    return send_from_directory('static', path=path)
 
 
 @crud.route('/feed', defaults={'n': 10}, methods=['GET'])

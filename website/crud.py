@@ -93,7 +93,7 @@ def last(days):
     elif only_published:
         only_published = True
 
-    entries = get_client().get_in_previous_days(int(days), only_published=only_published)
+    entries = get_client().get_in_previous_days(days, only_published=only_published)
     response = jsonify([
         entry.to_dict() for entry in entries
     ])

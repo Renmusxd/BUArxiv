@@ -1,4 +1,12 @@
-d3.json('feed/20',  function(error, data) {
+// Check for queryparams like ?only_published=True
+const wurl = window.location.search;
+var wurl_split = wurl.split('?');
+var queryString = (wurl_split.length === 2) ? wurl.split('?')[1] : '';
+if (queryString !== '') {
+    queryString = "?" + queryString;
+}
+
+d3.json('feed/24' + queryString,  function(error, data) {
     var div = d3.select('.list');
     div.selectAll('div')
         .data(data)
@@ -37,7 +45,7 @@ d3.json('feed/20',  function(error, data) {
                  "<i>" + d['authors'] + "</i>" +
                  journal_html +
                  "<p>" + display_summary + "</p>" +
-                "<div class=\"tagdiv\">" + tagstr + "</div>"
+                "<div class=\"tagdiv\">" + tagstr + "</div>" +
                  "</div>"
         });
 

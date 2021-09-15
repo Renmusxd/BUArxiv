@@ -5,7 +5,7 @@ import sys
 import time
 
 import flask
-from flask import Blueprint, send_file, jsonify, render_template, redirect, url_for, abort, send_from_directory
+from flask import Blueprint, send_file, jsonify, render_template, redirect, url_for, abort, send_from_directory, request
 from flask_wtf import CSRFProtect
 from werkzeug.utils import secure_filename
 import pathlib
@@ -67,7 +67,14 @@ def feed(num):
     else:
         n, m = res
 
-    entries = get_client().get_last(m, n=n)
+    # Get filters
+    only_published = request.args.get('only_published', '')
+    if not only_published or only_published == 'false' or only_published == 'False':
+        only_published = False
+    elif only_published:
+        only_published = True
+
+    entries = get_client().get_last(m, n=n, only_published=only_published)
     response = jsonify([
         entry.to_dict() for entry in entries
     ])
@@ -79,7 +86,14 @@ def feed(num):
 @crud.route('/last/', defaults={'days': 30},  methods=['GET'])
 @crud.route('/last/<int:days>', methods=['GET'])
 def last(days):
-    entries = get_client().get_in_previous_days(int(days))
+    # Get filters
+    only_published = request.args.get('only_published', '')
+    if not only_published or only_published == 'false' or only_published == 'False':
+        only_published = False
+    elif only_published:
+        only_published = True
+
+    entries = get_client().get_in_previous_days(int(days), only_published=only_published)
     response = jsonify([
         entry.to_dict() for entry in entries
     ])

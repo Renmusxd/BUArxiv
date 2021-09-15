@@ -58,22 +58,27 @@ class SQLClient(object):
         arxivsql = ArxivEntry.query.get(id)
         return arxivsql
 
-    def get_last(self, m, n=0):
+    def get_last(self, m, n=0, only_published=False):
         entries = ArxivEntry.query\
             .filter(ArxivEntry.hidden.is_(False))\
-            .order_by(ArxivEntry.timestamp.desc())\
-            .limit(m) \
-            .all()
+            .order_by(ArxivEntry.timestamp.desc())
+
+        if only_published:
+            entries = entries.filter(db.func.coalesce(ArxivEntry.journal_ref, '') != '')
+
+        entries = entries.limit(m).all()
         return entries[n:]
 
-    def get_in_previous_days(self, days):
+    def get_in_previous_days(self, days, only_published=False):
         current_time = datetime.datetime.utcnow()
         days_ago = current_time - datetime.timedelta(days=days)
-        return ArxivEntry.query\
+        entries = ArxivEntry.query\
             .filter(ArxivEntry.timestamp > days_ago)\
             .filter(ArxivEntry.hidden.is_(False))\
-            .order_by(ArxivEntry.timestamp.desc())\
-            .all()
+            .order_by(ArxivEntry.timestamp.desc())
+        if only_published:
+            entries = entries.filter(db.func.coalesce(ArxivEntry.journal_ref, '') != '')
+        return entries.all()
 
     def add_entry(self, id='0', url='localhost', title='Example Title', abstract='Example abstract',
                   summary='Example summary', autoupdate=False, timestamp=None,  image_url=None, tags=None,

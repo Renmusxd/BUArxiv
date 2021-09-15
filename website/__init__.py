@@ -7,7 +7,7 @@ from website.database import db, init_app
 
 
 def create_app(config, debug=False, testing=False, config_overrides=None, make_db=False):
-    app = Flask(__name__, static_folder='static')
+    app = Flask(__name__, static_url_path='/cmt-arxiv/static', static_folder='static')
     app.config.from_object(config)
     # CDN(app)
 

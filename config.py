@@ -4,9 +4,6 @@ EDIT_PASSWORD = os.environ['FLASK_EDIT_PASSWORD'] if 'FLASK_EDIT_PASSWORD' in os
 SECRET_KEY = os.environ['FLASK_SECRET_KEY'] if 'FLASK_SECRET_KEY' in os.environ else 'secret'
 WTF_CSRF_TIME_LIMIT = 7200
 
-# STATIC_URL = 'http://127.0.0.1:8080/static/'
-# CDN_DOMAIN = STATIC_URL
-
 SQLALCHEMY_DATABASE_URI = 'sqlite:///../test.db'
 
 MAX_CONTENT_LENGTH = 8 * 1024 * 1024

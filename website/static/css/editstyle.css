@@ -1,0 +1,34 @@
+.formdiv {
+    max-width: 1024px;
+    background-color: #FAFAFA;
+    padding: 10px 10px 10px 10px;
+    margin: 10px 10px 10px 10px;
+    border-color: black;
+    border-style: solid;
+}
+
+label {
+    font-size: 24px;
+}
+
+.buttondiv {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+}
+
+.submitbutton {
+    width: 256px;
+    height: 32px;
+    background: lightgreen;
+}
+
+input {
+    margin-bottom: 20px;
+}
+
+.errordiv {
+    color: red
+}

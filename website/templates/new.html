@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>New Entry</title>
+    <link rel="stylesheet" href="../static/css/editstyle.css">
 </head>
 <body>
+    <div class="formdiv">
     <form action="{{ url_for('crud.new_id', id=id)  }}" method="post" enctype="multipart/form-data" autocomplete="off">
         {{ newform.csrf_token }}
         <h3>New Entry: {{ id }}</h3>
@@ -49,13 +51,15 @@
         <label for="hidden">Hide from feed and edit list:</label>
         <input type="checkbox" id="hidden" name="hidden">
 
-        <input type="submit" style="width:100%;" value="Submit">
+        <br>
+        <div class="buttondiv">
+            <input type="submit" value="Submit" class="submitbutton">
+        </div>
     </form>
 
-
     {% for error in errors %}
-        <div class="color: red">{{ error }}</div>
+        <div class="errordiv">{{ error }}</div>
     {% endfor %}
-
+    </div>
 </body>
 </html>

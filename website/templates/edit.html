@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Edit Entry</title>
+    <link rel="stylesheet" href="../static/css/editstyle.css">
 </head>
 <body>
+    <div class="formdiv">
     <form action="{{ url_for('crud.edit', id=entry.id)  }}" method="post" enctype="multipart/form-data" autocomplete="off">
         {{ editform.csrf_token }}
         <h3>Editing {{ entry.id }}</h3>
@@ -43,23 +45,25 @@
         <label for="unstructuredarea">Unstructured</label><br>
         <textarea id="unstructuredarea" name="unstructured" style="width:100%; min-height: 256px; resize: vertical;" placeholder="Advanced settings">{{ entry.unstructured if entry.unstructured else '' }}</textarea>
 
-        <label for="autoupdate">Overwrite changes on next scrape:</label>
+        <label for="autoupdate">Overwrite fields on next scrape:</label>
         <input type="checkbox" id="autoupdate" name="autoupdate">
+        <br>
 
-        <label for="hidden">Hide from feed and edit list:</label>
+        <label for="hidden">Remove entry:</label>
         {% if entry.hidden %}
             <input type="checkbox" id="hidden" name="hidden" checked>
         {% else %}
             <input type="checkbox" id="hidden" name="hidden">
         {% endif %}
 
-        <input type="submit" style="width:100%;" value="Submit">
+        <br>
+        <div class="buttondiv">
+            <input type="submit" value="Submit" class="submitbutton">
+        </div>
     </form>
-
-
     {% for error in errors %}
-        <div class="color: red">{{ error }}</div>
+        <div class="errordiv">{{ error }}</div>
     {% endfor %}
-
+    </div>
 </body>
 </html>

@@ -58,12 +58,13 @@ class SQLClient(object):
         arxivsql = ArxivEntry.query.get(id)
         return arxivsql
 
-    def get_last_n(self, n):
-        return ArxivEntry.query\
+    def get_last(self, m, n=0):
+        entries = ArxivEntry.query\
             .filter(ArxivEntry.hidden.is_(False))\
             .order_by(ArxivEntry.timestamp.desc())\
-            .limit(n)\
+            .limit(m) \
             .all()
+        return entries[n:]
 
     def get_in_previous_days(self, days):
         current_time = datetime.datetime.utcnow()

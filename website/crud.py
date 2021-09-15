@@ -31,10 +31,11 @@ def send_static(path):
     return send_from_directory('static', path=path)
 
 
-@crud.route('/feed', defaults={'n': 10}, methods=['GET'])
-@crud.route('/feed/<int:n>', methods=['GET'])
-def feed(n):
-    entries = get_client().get_last_n(n)
+@crud.route('/feed', defaults={'n': 0, 'm': 10}, methods=['GET'])
+@crud.route('/feed/<int:m>', defaults={'n': 0}, methods=['GET'])
+@crud.route('/feed/<int:n>/<int:m>', methods=['GET'])
+def feed(n, m):
+    entries = get_client().get_last(m, n=n)
     response = jsonify([
         entry.to_dict() for entry in entries
     ])

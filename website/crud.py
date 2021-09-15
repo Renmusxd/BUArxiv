@@ -31,7 +31,27 @@ def send_static(path):
     return send_from_directory('static', path=path)
 
 
+def parse_possible_range(numstr):
+    def is_int(s):
+        try:
+            int(s)
+            return True
+        except ValueError:
+            return False
+    if is_int(numstr):
+        n = 0
+        m = int(numstr)
+        return n,m
+    else:
+        n, m = numstr.split('-')
+        if is_int(n) and is_int(m):
+            n = int(n)
+            m = int(m)
+            return n,m
+    return None
+
 @crud.route('/feed', defaults={'num': '10'}, methods=['GET'])
+@crud.route('/feed/', defaults={'num': '10'}, methods=['GET'])
 @crud.route('/feed/<string:num>',  methods=['GET'])
 def feed(num):
     def is_int(s):
@@ -40,16 +60,13 @@ def feed(num):
             return True
         except ValueError:
             return False
-    if is_int(num):
-        n = 0
-        m = int(num)
+
+    res = parse_possible_range(num)
+    if res is None:
+        return "Not found", 404
     else:
-        n, m = num.split('-')
-        if is_int(n) and is_int(m):
-            n = int(n)
-            m = int(m)
-        else:
-            return "Not found", 404
+        n, m = res
+
     entries = get_client().get_last(m, n=n)
     response = jsonify([
         entry.to_dict() for entry in entries
@@ -58,6 +75,8 @@ def feed(num):
     return response
 
 
+@crud.route('/last', defaults={'days': 30}, methods=['GET'])
+@crud.route('/last/', defaults={'days': 30},  methods=['GET'])
 @crud.route('/last/<int:days>', methods=['GET'])
 def last(days):
     entries = get_client().get_in_previous_days(int(days))
@@ -71,7 +90,7 @@ def last(days):
 @crud.route('/edit', methods=['GET'])
 @crud.route('/edit/', methods=['GET'])
 def listedits():
-    entries = get_client().get_last_n(50)
+    entries = get_client().get_last(50)
     return render_template('editlist.html', entries=entries)
 
 

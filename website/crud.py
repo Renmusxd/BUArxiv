@@ -31,10 +31,25 @@ def send_static(path):
     return send_from_directory('static', path=path)
 
 
-@crud.route('/feed', defaults={'n': 0, 'm': 10}, methods=['GET'])
-@crud.route('/feed/<int:m>', defaults={'n': 0}, methods=['GET'])
-@crud.route('/feed/<int:n>/<int:m>', methods=['GET'])
-def feed(n, m):
+@crud.route('/feed', defaults={'num': '10'}, methods=['GET'])
+@crud.route('/feed/<string:num>',  methods=['GET'])
+def feed(num):
+    def is_int(s):
+        try:
+            int(s)
+            return True
+        except ValueError:
+            return False
+    if is_int(num):
+        n = 0
+        m = int(num)
+    else:
+        n, m = num.split('-')
+        if is_int(n) and is_int(m):
+            n = int(n)
+            m = int(m)
+        else:
+            return "Not found", 404
     entries = get_client().get_last(m, n=n)
     response = jsonify([
         entry.to_dict() for entry in entries

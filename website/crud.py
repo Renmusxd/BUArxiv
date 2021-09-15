@@ -35,17 +35,21 @@ def send_static(path):
 @crud.route('/feed/<int:n>', methods=['GET'])
 def feed(n):
     entries = get_client().get_last_n(n)
-    return jsonify([
+    response = jsonify([
         entry.to_dict() for entry in entries
     ])
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 
 @crud.route('/last/<int:days>', methods=['GET'])
 def last(days):
     entries = get_client().get_in_previous_days(int(days))
-    return jsonify([
+    response = jsonify([
         entry.to_dict() for entry in entries
     ])
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 
 @crud.route('/edit', methods=['GET'])

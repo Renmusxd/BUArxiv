@@ -26,6 +26,12 @@ def index():
     """Return a friendly HTTP greeting."""
     return send_file('static/index.html')
 
+
+@crud.route('/how-do-I-edit')
+def index():
+    """Return a friendly HTTP greeting."""
+    return send_file('static/instructions.html')
+
 @crud.route('static/<path:path>')
 def send_static(path):
     return send_from_directory('static', path=path)

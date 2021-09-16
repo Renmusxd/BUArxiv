@@ -28,7 +28,7 @@ def index():
 
 
 @crud.route('/how-do-I-edit')
-def index():
+def edit_instructions():
     """Return a friendly HTTP greeting."""
     return send_file('static/instructions.html')
 

@@ -9,12 +9,11 @@ from flask import Blueprint, send_file, jsonify, render_template, redirect, url_
 from flask_wtf import CSRFProtect
 from werkzeug.utils import secure_filename
 import pathlib
+from PIL import Image
 
 import config
 from website.database import get_client
 from website.forms import *
-
-logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 crud = Blueprint('crud', __name__, url_prefix='/cmt-arxiv')
 
@@ -123,10 +122,22 @@ def edit(id):
             if editform.validate_on_submit():
                 if editform.edit_code.data.strip() == config.EDIT_PASSWORD or not config.EDIT_PASSWORD:
                     if editform.image.data:
+                        # Save full sized
                         filename = secure_filename(editform.image.data.filename)
                         filename = id.replace('/', '_') + pathlib.Path(filename).suffix
-                        editform.image.data.save(os.path.join(config.SAVE_IMAGE_LOCATION, filename))
+                        image_path = os.path.join(config.SAVE_IMAGE_LOCATION, filename)
+                        editform.image.data.save(image_path)
                         image_url = config.SAVE_IMAGE_URL_PREFIX + filename
+                        # Now make thumbnail
+                        try:
+                            im = Image.open(request.files[editform.image.name])
+                            im.thumbnail(config.THUMBNAIL_SIZE, Image.ANTIALIAS)
+                            thumbnail_path = os.path.join(config.SAVE_IMAGE_THUMBNAIL_LOCATION, filename)
+                            im.save(thumbnail_path, "png")
+                            image_url = config.SAVE_IMAGE_THUMBNAIL_URL_PREFIX + filename
+                        except IOError:
+                            print("cannot create thumbnail for {}".format(editform.image.name))
+
                     else:
                         image_url = editform.image_url.data.strip()
 

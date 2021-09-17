@@ -10,6 +10,6 @@ MAX_CONTENT_LENGTH = 8 * 1024 * 1024
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 SAVE_IMAGE_LOCATION = 'website/static/img/'
 SAVE_IMAGE_URL_PREFIX = 'static/img/'
-THUMBNAIL_SIZE = (128,128)
+THUMBNAIL_SIZE = (256,256)
 SAVE_IMAGE_THUMBNAIL_LOCATION = 'website/static/img/thumbnails/'
 SAVE_IMAGE_THUMBNAIL_URL_PREFIX = 'static/img/thumbnails/'

@@ -42,7 +42,7 @@
         <label for="tags">Tags</label><br>
         <input id="tags" type="text" name="tags" style="width: 100%" value="{{ entry.tags }}" placeholder="Tags for paper">
 
-        <label for="unstructuredarea">Unstructured</label><br>
+        <label for="unstructuredarea">Advanced Settings</label><br>
         <textarea id="unstructuredarea" name="unstructured" style="width:100%; min-height: 256px; resize: vertical;" placeholder="Advanced settings">{{ entry.unstructured if entry.unstructured else '' }}</textarea>
 
         <label for="autoupdate">Overwrite fields on next scrape:</label>

@@ -112,7 +112,7 @@ def run_scrape(authors, author_tags, db_file, strip_versions=True):
                                    tags=", ".join(res.categories),
                                    autoupdate=True,
                                    hidden=False,
-                                   unstructured_data='{"autoupdates": ["doi", "journal"]}')
+                                   unstructured='{"autoupdates": ["doi", "journal"]}')
                     session.add(a)
                 else:
                     autoupdates = []

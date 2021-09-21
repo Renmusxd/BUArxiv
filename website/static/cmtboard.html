@@ -6,9 +6,7 @@
     <img class="bulogo" src="https://www.bu.edu/urop/files/2019/07/BU-Brick-Logo.png" height="72px">
   </div>
   <div class="list"></div>
-  <p style="margin: 15px 15px 15px 15px;">
-    For questions or edits contact sumnerh@bu.edu
-  </p>
+  <p class="contact" style="margin: 15px 15px 15px 15px;"></p>
 </div>
 
 <style>
@@ -19,8 +17,9 @@
   .bulogo {
     margin-left: auto; 
 	margin-right: 0;
+    z-index: 2;
   }
-  
+
   .super {
     background-color: #EEEEEE;
     display: flex;
@@ -35,19 +34,22 @@
     flex-direction: row;
     width: 720px;
     min-height: 200px;
+    max-height: 256px;
     flex-grow: 1.5;
+    overflow: hidden;
     outline: 1px solid gray;
     padding: 5px 5px 5px 5px;
     margin: 15px 15px 15px 15px;
-    background-color: #FAFAFA;
+    /*background-color: #FAFAFA;*/
+    background-color: #FFFFFF;
   }
-  
+
   .list {
+    z-index: 1;
     display: flex;
     flex-wrap: wrap;
     align-content: flex-start;
     justify-content: flex-start;
-    /*padding: 40px 40px 40px 40px;*/
     background-color: #EEEEEE;
     height: 100%;
   }
@@ -163,6 +165,21 @@
       await sleep(60*1000);
     }
   }
-  run_all()
+
+  // To reduce possible spam from scraping bots.
+  async function sleep_and_pop() {
+      console.log('here');
+      await sleep(100);
+      var div = d3.select('.contact');
+      div.html("For questions or edits contact .......@bu.edu");
+      await sleep(5000);
+      var l = [115, 117, 109, 110, 101, 114, 104];
+      var email = l.map(function(d) { return String.fromCharCode(d) }).join("");
+      console.log('email');
+      var div = d3.select('.contact');
+      div.html("For questions or edits contact " + email + "@bu.edu");
+  }
+  run_all();
+  sleep_and_pop();
 </script>
 </html>

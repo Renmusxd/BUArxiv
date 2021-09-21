@@ -145,6 +145,8 @@ def edit(id):
                                             title=editform.title.data.strip(),
                                             authors=editform.authors.data.strip(),
                                             url=editform.post_url.data.strip(),
+                                            journal_ref=editform.journal_ref.data.strip(),
+                                            doi=editform.doi.data.strip(),
                                             summary=editform.summary.data.strip(),
                                             abstract=editform.abstract.data.strip(),
                                             image_url=image_url,

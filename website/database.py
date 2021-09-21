@@ -95,8 +95,9 @@ class SQLClient(object):
         return entry
 
     def edit_by_id(self, id='0', url=None, title=None, abstract=None,
-                  summary=None, autoupdate=False, image_url=None, tags=None,
-                  unstructured=None, authors=None, hidden=False):
+                   summary=None, autoupdate=False, image_url=None, tags=None,
+                   journal_ref=None, doi=None,
+                   unstructured=None, authors=None, hidden=False):
         entry = self.get_by_id(id)
         entry.url = url
         entry.title = title
@@ -108,6 +109,8 @@ class SQLClient(object):
         entry.tags = tags
         entry.unstructured = unstructured
         entry.hidden = hidden
+        entry.journal_ref = journal_ref
+        entry.doi = doi
         db.session.commit()
 
 

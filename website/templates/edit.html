@@ -27,6 +27,12 @@
         <label for="post_url">URL</label><br>
         <input id="post_url" type="text" name="post_url" style="width: 100%" value="{{ entry.url }}">
 
+        <label for="journalarea">Journal Ref.</label><br>
+        <input id="journalarea" type="text" name="journal_ref" style="width: 100%" value="{{ entry.journal_ref if entry.journal_ref else ''  }}">
+
+        <label for="doiarea">DOI</label><br>
+        <input id="doiarea" type="text" name="doi" style="width: 100%" value="{{ entry.doi if entry.doi else ''  }}">
+
         <label for="summaryarea">Summary</label><br>
         <textarea id="summaryarea" name="summary" style="width:100%; min-height: 128px; resize: vertical;" placeholder="Short summary">{{ entry.summary if entry.summary else ''  }}</textarea>
 

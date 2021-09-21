@@ -38,7 +38,6 @@ function handle_preview(e) {
 
 function setup_preview(formid) {
     let form = document.getElementById(formid);
-    console.log(form.children);
     for (let i = 0; i < form.children.length; i++) {
       let child = form.children[i];
       if (child.tagName === "INPUT" ||  child.tagName === "TEXTAREA") {

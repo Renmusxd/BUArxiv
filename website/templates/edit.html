@@ -11,8 +11,10 @@
 </head>
 <body>
     <div class="formdiv">
-        <h2>Preview</h2>
-        <div id="entry-preview" class="list-entry"></div>
+        <h2>Preview</h2><br>
+        <div style="display: flex;">
+            <div id="entry-preview" class="list-entry"></div>
+        </div>
     </div>
     <div class="formdiv">
     <form id="entryform" name="entryform" action="{{ url_for('crud.edit', id=entry.id)  }}" method="post" enctype="multipart/form-data" autocomplete="off" onsubmit="return validateForm();">

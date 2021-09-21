@@ -1,0 +1,66 @@
+h3 {
+  font-size: 26px;
+}
+
+.bulogo {
+  margin-left: auto;
+  margin-right: 0;
+  z-index: 2;
+}
+
+.super {
+  background-color: #EEEEEE;
+  display: flex;
+  flex-direction: column;
+  padding: 40px 40px 40px 40px;
+  height: 1000px;
+}
+
+.list-entry {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  width: 720px;
+  min-height: 200px;
+  max-height: 256px;
+  flex-grow: 1.5;
+  overflow: hidden;
+  outline: 1px solid gray;
+  padding: 5px 5px 5px 5px;
+  margin: 15px 15px 15px 15px;
+  /*background-color: #FAFAFA;*/
+  background-color: #FFFFFF;
+}
+
+.list {
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  justify-content: flex-start;
+  background-color: #EEEEEE;
+  height: 100%;
+}
+
+.listimg {
+  max-height: 256px;
+  max-width: 256px;
+  padding: 5px 5px 5px 5px;
+}
+
+.textdiv {
+  padding: 5px 5px 5px 5px;
+  flex-grow: 10;
+}
+
+.tagdiv {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-direction: row;
+}
+
+.tagdiv-entry {
+  font-size: 10px;
+  padding: 5px 5px 5px 5px;
+}

@@ -2,13 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>New Entry</title>
+    <title>Edit Entry</title>
     <link rel="stylesheet" href="../static/css/editstyle.css">
+    <link rel="stylesheet" href="../static/css/cmtboard.css">
+    <script src="../static/jss/main.js"></script>
     <script src="../static/jss/formvalidate.js"></script>
+    <script defer src="../static/jss/editpreview.js" onload='setup_preview("entryform");'></script>
 </head>
 <body>
     <div class="formdiv">
-    <form name="entryform" action="{{ url_for('crud.new_id', id=id)  }}" method="post" enctype="multipart/form-data" autocomplete="off" onsubmit="return validateForm();">
+        <h2>Preview</h2>
+        <div id="entry-preview" class="list-entry"></div>
+    </div>
+    <div class="formdiv">
+    <form id="entryform" name="entryform" action="{{ url_for('crud.new_id', id=id)  }}" method="post" enctype="multipart/form-data" autocomplete="off" onsubmit="return validateForm();">
         {{ newform.csrf_token }}
         <h3>New Entry: {{ id }}</h3>
 

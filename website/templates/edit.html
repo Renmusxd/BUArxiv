@@ -4,11 +4,18 @@
     <meta charset="UTF-8">
     <title>Edit Entry</title>
     <link rel="stylesheet" href="../static/css/editstyle.css">
+    <link rel="stylesheet" href="../static/css/cmtboard.css">
+    <script src="../static/jss/main.js"></script>
     <script src="../static/jss/formvalidate.js"></script>
+    <script defer src="../static/jss/editpreview.js" onload='setup_preview("entryform");'></script>
 </head>
 <body>
     <div class="formdiv">
-    <form name="entryform" action="{{ url_for('crud.edit', id=entry.id)  }}" method="post" enctype="multipart/form-data" autocomplete="off" onsubmit="return validateForm();">
+        <h2>Preview</h2>
+        <div id="entry-preview" class="list-entry"></div>
+    </div>
+    <div class="formdiv">
+    <form id="entryform" name="entryform" action="{{ url_for('crud.edit', id=entry.id)  }}" method="post" enctype="multipart/form-data" autocomplete="off" onsubmit="return validateForm();">
         {{ editform.csrf_token }}
         <h3>Editing {{ entry.id }}</h3>
 
@@ -33,6 +40,9 @@
 
         <label for="doiarea">DOI</label><br>
         <input id="doiarea" type="text" name="doi" style="width: 100%" value="{{ entry.doi if entry.doi else ''  }}">
+
+        <label for="publish">Publication Date:</label>
+        <input type="date" id="publish" name="publish" value="{{ fix_dates(entry.timestamp) }}"><br>
 
         <label for="summaryarea">Summary</label><br>
         <textarea id="summaryarea" name="summary" style="width:100%; min-height: 128px; resize: vertical;" placeholder="Short summary">{{ entry.summary if entry.summary else ''  }}</textarea>

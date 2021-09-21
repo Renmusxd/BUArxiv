@@ -1,3 +1,13 @@
+a:link {
+  text-decoration: none;
+  color: black;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: black;
+}
+
 .formdiv {
     max-width: 1024px;
     background-color: #FAFAFA;

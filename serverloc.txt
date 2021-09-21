@@ -1,0 +1,6 @@
+lxc/lxd
+
+ssh sumnerh@physics.bu.edu
+ssh cmt-arxiv
+just a ubuntu 20.04
+server runs here 

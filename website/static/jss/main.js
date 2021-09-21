@@ -15,22 +15,22 @@ d3.json('feed/24' + queryString,  function(error, data) {
         .attr('class', 'list-entry')
         .html(function(d) {
             var img = "";
-            if (d['image_url'] != null) {
+            if (d['image_url'] != null && d['image_url'] !== "") {
                 img = "<img src=\"" + d['image_url'] + "\" alt=\"\" class=\"listimg\" />";
             }
 
             var display_summary = '';
-            if (d['summary'] != null) {
+            if (d['summary'] != null && d['summary'] !== "") {
                 display_summary = d['summary'];
             }
 
             var journal_html = '';
-            if (d['journal_ref'] != null) {
+            if (d['journal_ref'] != null && d['journal_ref'] !== "") {
                 journal_html = '<br><b>' + d['journal_ref'] + '</b>'
             }
 
             var tagstr = "";
-            if (d['tags'] != null) {
+            if (d['tags'] != null && d['tags'] !== "") {
                 var tags = [...new Set(d['tags'].split(',').map(function(tag) {
                     return tag.split('.')[0].trim();
                 }))].sort();
@@ -39,9 +39,16 @@ d3.json('feed/24' + queryString,  function(error, data) {
                 }).join('');
             }
 
+            var anchor_prefix = "";
+            var anchor_suffix = "";
+            if (d['url'] != null && d['url'] !== "") {
+                anchor_prefix = "<a href=\"" + d['url'] + "\">";
+                anchor_suffix = "</a>";
+            }
+
             return img + "</div>" +
                  "<div class=\"textdiv\">" +
-                 "<a href=\"" + d['url'] + "\"><h3>" + d['title'] + "</h3></a>" +
+                 anchor_prefix + "<h3>" + d['title'] + "</h3>" + anchor_suffix +
                  "<i>" + d['authors'] + "</i>" +
                  journal_html +
                  "<p>" + display_summary + "</p>" +

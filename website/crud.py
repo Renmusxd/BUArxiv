@@ -191,15 +191,35 @@ def new_id(id):
         newform = NewForm()
         if newform.validate_on_submit():
             if newform.edit_code.data.strip() == config.EDIT_PASSWORD or not config.EDIT_PASSWORD:
-                print(newform.publishdate.data)
+                if newform.image.data:
+                    # Save full sized
+                    filename = secure_filename(newform.image.data.filename)
+                    filename = id.replace('/', '_') + pathlib.Path(filename).suffix
+                    image_path = os.path.join(config.SAVE_IMAGE_LOCATION, filename)
+                    newform.image.data.save(image_path)
+                    image_url = config.SAVE_IMAGE_URL_PREFIX + filename
+                    # Now make thumbnail
+                    try:
+                        im = Image.open(request.files[newform.image.name])
+                        im.thumbnail(config.THUMBNAIL_SIZE, Image.ANTIALIAS)
+                        thumbnail_path = os.path.join(config.SAVE_IMAGE_THUMBNAIL_LOCATION, filename)
+                        im.save(thumbnail_path, "png")
+                        image_url = config.SAVE_IMAGE_THUMBNAIL_URL_PREFIX + filename
+                    except IOError:
+                        print("cannot create thumbnail for {}".format(newform.image.name))
+                else:
+                    image_url = newform.image_url.data.strip()
+
                 get_client().add_entry(id,
                                        title=newform.title.data.strip(),
                                        authors=newform.authors.data.strip(),
+                                       journal_ref=newform.journal_ref.data.strip(),
+                                       doi=newform.doi.data.strip(),
                                        url=newform.post_url.data.strip(),
                                        summary=newform.summary.data.strip(),
                                        timestamp=newform.publishdate.data,
                                        abstract=newform.abstract.data.strip(),
-                                       image_url=newform.image_url.data.strip(),
+                                       image_url=image_url,
                                        tags=newform.tags.data.strip(),
                                        unstructured=newform.unstructured.data.strip(),
                                        autoupdate=False,

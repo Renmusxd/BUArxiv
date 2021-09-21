@@ -81,12 +81,13 @@ class SQLClient(object):
         return entries.all()
 
     def add_entry(self, id='0', url='localhost', title='Example Title', abstract='Example abstract',
-                  summary='Example summary', autoupdate=False, timestamp=None,  image_url=None, tags=None,
+                  summary='Example summary', journal_ref=None, doi=None, autoupdate=False, timestamp=None,  image_url=None, tags=None,
                   unstructured=None, authors='A. Bee', hidden=False):
         if timestamp is None:
             timestamp = datetime.date.today()
         entry = ArxivEntry(id=id, title=title, url=url, summary=summary,
                            abstract=abstract, timestamp=timestamp,
+                           journal_ref=journal_ref, doi=doi,
                            image_url=image_url, autoupdate=autoupdate,
                            tags=tags, unstructured=unstructured,
                            authors=authors, hidden=hidden)

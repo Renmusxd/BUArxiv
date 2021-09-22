@@ -55,6 +55,30 @@ def parse_possible_range(numstr):
             return n, m
     return None
 
+def parse_filters():
+    # Get filters
+    only_published = request.args.get('only_published', '')
+    if not only_published or only_published == 'false' or only_published == 'False':
+        only_published = False
+    elif only_published:
+        only_published = True
+
+    authors_includes = request.args.getlist('authors_includes')
+    authors_excludes = request.args.getlist('authors_excludes')
+    tags_includes = request.args.getlist('tags_includes')
+    tags_excludes = request.args.getlist('tags_excludes')
+    journal_includes = request.args.getlist('journal_includes')
+    journal_excludes = request.args.getlist('journal_excludes')
+
+    return {
+        'only_published': only_published,
+        'authors_includes': authors_includes,
+        'authors_excludes': authors_excludes,
+        'tags_includes': tags_includes,
+        'tags_excludes': tags_excludes,
+        'journal_includes': journal_includes,
+        'journal_excludes': journal_excludes,
+    }
 
 @crud.route('/feed', defaults={'num': '10'}, methods=['GET'])
 @crud.route('/feed/', defaults={'num': '10'}, methods=['GET'])
@@ -66,14 +90,8 @@ def feed(num):
     else:
         n, m = res
 
-    # Get filters
-    only_published = request.args.get('only_published', '')
-    if not only_published or only_published == 'false' or only_published == 'False':
-        only_published = False
-    elif only_published:
-        only_published = True
-
-    entries = get_client().get_last(m, start=n, only_published=only_published)
+    filters = parse_filters()
+    entries = get_client().get_last(m, start=n, **filters)
     response = jsonify([
         entry.to_dict() for entry in entries
     ])
@@ -85,14 +103,8 @@ def feed(num):
 @crud.route('/last/', defaults={'days': 30},  methods=['GET'])
 @crud.route('/last/<int:days>', methods=['GET'])
 def last(days):
-    # Get filters
-    only_published = request.args.get('only_published', '')
-    if not only_published or only_published == 'false' or only_published == 'False':
-        only_published = False
-    elif only_published:
-        only_published = True
-
-    entries = get_client().get_in_previous_days(days, only_published=only_published)
+    filters = parse_filters()
+    entries = get_client().get_in_previous_days(days, **filters)
     response = jsonify([
         entry.to_dict() for entry in entries
     ])
@@ -103,13 +115,6 @@ def last(days):
 @crud.route('/edit', methods=['GET'])
 @crud.route('/edit/', methods=['GET'])
 def listedits():
-    # Get filters
-    only_published = request.args.get('only_published', '')
-    if not only_published or only_published == 'false' or only_published == 'False':
-        only_published = False
-    elif only_published:
-        only_published = True
-
     end = request.args.get('end', '50')
     if is_int(end):
         end = int(end)
@@ -121,7 +126,8 @@ def listedits():
     else:
         start = 0
 
-    entries = get_client().get_last(end, start=start, only_published=only_published)
+    filters = parse_filters()
+    entries = get_client().get_last(end, start=start, **filters)
     return render_template('editlist.html', entries=entries, start=start, end=end, perpage=50)
 
 

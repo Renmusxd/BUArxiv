@@ -1,7 +1,6 @@
 import datetime
 from flask_sqlalchemy import SQLAlchemy
 
-
 db = SQLAlchemy()
 
 
@@ -58,26 +57,49 @@ class SQLClient(object):
         arxivsql = ArxivEntry.query.get(id)
         return arxivsql
 
-    def get_last(self, end, start=0, only_published=False):
+    def filter_query(self, entries, only_published=False,
+                     authors_includes=None, authors_excludes=None,
+                     tags_includes=None, tags_excludes=None,
+                     journal_includes=None, journal_excludes=None):
+        if only_published:
+            entries = entries.filter(db.func.coalesce(ArxivEntry.journal_ref, '') != '')
+        if authors_includes:
+            for authors_include in authors_includes:
+                entries = entries.filter(ArxivEntry.authors.contains(authors_include))
+        if authors_excludes:
+            for authors_exclude in authors_excludes:
+                entries = entries.filter(ArxivEntry.authors.contains(authors_exclude).is_(False))
+        if tags_includes:
+            for tags_include in tags_includes:
+                entries = entries.filter(ArxivEntry.tags.contains(tags_include))
+        if tags_excludes:
+            for tags_exclude in tags_excludes:
+                entries = entries.filter(ArxivEntry.tags.contains(tags_exclude).is_(False))
+        if journal_includes:
+            for journal_include in journal_includes:
+                entries = entries.filter(db.func.coalesce(ArxivEntry.journal_ref, '').contains(journal_include))
+        if journal_excludes:
+            for journal_exclude in journal_excludes:
+                entries = entries.filter(db.func.coalesce(ArxivEntry.journal_ref, '').contains(journal_exclude).is_(False))
+        return entries
+
+    def get_last(self, end, start=0, **kwargs):
         entries = ArxivEntry.query\
             .filter(ArxivEntry.hidden.is_(False))\
             .order_by(ArxivEntry.timestamp.desc())
-
-        if only_published:
-            entries = entries.filter(db.func.coalesce(ArxivEntry.journal_ref, '') != '')
-
+        entries = self.filter_query(entries, **kwargs)
         entries = entries.limit(end).all()
         return entries[start:]
 
-    def get_in_previous_days(self, days, only_published=False):
+    def get_in_previous_days(self, days, **kwargs):
         current_time = datetime.datetime.utcnow()
         days_ago = current_time - datetime.timedelta(days=days)
         entries = ArxivEntry.query\
             .filter(ArxivEntry.timestamp > days_ago)\
             .filter(ArxivEntry.hidden.is_(False))\
             .order_by(ArxivEntry.timestamp.desc())
-        if only_published:
-            entries = entries.filter(db.func.coalesce(ArxivEntry.journal_ref, '') != '')
+
+        entries = self.filter_query(entries, **kwargs)
         return entries.all()
 
     def add_entry(self, id='0', url='localhost', title='Example Title', abstract='Example abstract',

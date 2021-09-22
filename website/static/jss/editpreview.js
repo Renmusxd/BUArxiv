@@ -14,6 +14,8 @@ function handle_preview(e) {
     }
     if (file) {
         image_url = URL.createObjectURL(file);
+        console.log("Found file: "+image_url);
+        console.log(e.target);
     }
 
     let data = {
@@ -33,7 +35,24 @@ function handle_preview(e) {
     };
 
     let preview = document.getElementById("entry-preview");
-    preview.innerHTML = html_from_data(data);
+    let imgsrc_field = document.getElementById("image_url");
+    let imgfile_field = document.getElementById("image");
+    let imgsrc = img_src_from_data(data);
+    let [img] = preview.getElementsByTagName("IMG");
+    if (imgsrc && !img) {
+        // Rebuild whole thing.
+        preview.innerHTML = html_from_data(data);
+    } else if (imgsrc && img && (e.target === imgfile_field || e.target === imgsrc_field)) {
+        img.src = imgsrc;
+    }
+
+    let [textdiv] = document.getElementsByClassName("textdiv");
+    if (!textdiv) {
+        // Rebuild whole thing.
+        preview.innerHTML = html_from_data(data);
+    } else {
+        textdiv.innerHTML = textdiv_html_from_data(data);
+    }
 }
 
 function setup_preview(formid) {
@@ -41,7 +60,8 @@ function setup_preview(formid) {
     for (let i = 0; i < form.children.length; i++) {
       let child = form.children[i];
       if (child.tagName === "INPUT" ||  child.tagName === "TEXTAREA") {
-           child.addEventListener("focusout", handle_preview);
+           child.addEventListener("input", handle_preview);
+           child.addEventListener("propertyChange", handle_preview);
        }
     }
     handle_preview({});

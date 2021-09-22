@@ -1,9 +1,11 @@
-function html_from_data(d) {
-    var img = "";
+function img_src_from_data(d) {
     if (d['image_url'] != null && d['image_url'] !== "") {
-        img = "<img src=\"" + d['image_url'] + "\" alt=\"\" class=\"listimg\" />";
+        return d['image_url'];
     }
+    return "";
+}
 
+function textdiv_html_from_data(d) {
     var display_summary = '';
     if (d['summary'] != null && d['summary'] !== "") {
         display_summary = d['summary'];
@@ -32,14 +34,23 @@ function html_from_data(d) {
         anchor_suffix = "</a>";
     }
 
-    return img + "</div>" +
-        "<div class=\"textdiv\">" +
-        anchor_prefix + "<h3>" + d['title'] + "</h3>" + anchor_suffix +
+    return anchor_prefix + "<h3>" + d['title'] + "</h3>" + anchor_suffix +
         "<i>" + d['authors'] + "</i>" +
         journal_html +
         "<p>" + display_summary + "</p>" +
-        "<div class=\"tagdiv\">" + time + "</div>" +
-        "</div>"
+        "<div class=\"tagdiv\">" + time + "</div>";
+}
+
+function html_from_data(d) {
+    let imgsrc = img_src_from_data(d);
+    var img = "";
+    if (imgsrc) {
+        let alttext = "Image for entry " + d['id'];
+        img = "<img src=\"" + imgsrc + "\" alt=\"" + alttext + "\" class=\"listimg\" />";
+    }
+
+    let textdiv = textdiv_html_from_data(d);
+    return img + "<div class=\"textdiv\">" + textdiv + "</div>"
 }
 
 function populate_all() {

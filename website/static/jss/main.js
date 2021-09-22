@@ -12,8 +12,10 @@ function textdiv_html_from_data(d) {
     }
 
     var journal_html = '';
-    if (d['journal_ref'] != null && d['journal_ref'] !== "") {
-        journal_html = '<br><b>' + d['journal_ref'] + '</b>'
+    if (d['journal_ref'] != null) {
+      journal_html = '<br><b>' + d['journal_ref'] + '</b>'
+    } else {
+      journal_html = '<br><b>arXiv:' + d['id'] + "</b>"
     }
 
     var tagstr = "";

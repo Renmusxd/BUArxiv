@@ -35,37 +35,31 @@ def edit_instructions():
 def send_static(path):
     return send_from_directory('static', path=path)
 
+def is_int(s):
+    try:
+        int(s)
+        return True
+    except ValueError:
+        return False
 
 def parse_possible_range(numstr):
-    def is_int(s):
-        try:
-            int(s)
-            return True
-        except ValueError:
-            return False
     if is_int(numstr):
         n = 0
         m = int(numstr)
-        return n,m
+        return n, m
     else:
         n, m = numstr.split('-')
         if is_int(n) and is_int(m):
             n = int(n)
             m = int(m)
-            return n,m
+            return n, m
     return None
+
 
 @crud.route('/feed', defaults={'num': '10'}, methods=['GET'])
 @crud.route('/feed/', defaults={'num': '10'}, methods=['GET'])
 @crud.route('/feed/<string:num>',  methods=['GET'])
 def feed(num):
-    def is_int(s):
-        try:
-            int(s)
-            return True
-        except ValueError:
-            return False
-
     res = parse_possible_range(num)
     if res is None:
         return "Not found", 404
@@ -79,7 +73,7 @@ def feed(num):
     elif only_published:
         only_published = True
 
-    entries = get_client().get_last(m, n=n, only_published=only_published)
+    entries = get_client().get_last(m, start=n, only_published=only_published)
     response = jsonify([
         entry.to_dict() for entry in entries
     ])
@@ -109,11 +103,29 @@ def last(days):
 @crud.route('/edit', methods=['GET'])
 @crud.route('/edit/', methods=['GET'])
 def listedits():
-    entries = get_client().get_last(50)
-    return render_template('editlist.html', entries=entries)
+    # Get filters
+    only_published = request.args.get('only_published', '')
+    if not only_published or only_published == 'false' or only_published == 'False':
+        only_published = False
+    elif only_published:
+        only_published = True
+
+    end = request.args.get('end', '50')
+    if is_int(end):
+        end = int(end)
+    else:
+        end = 50
+    start = request.args.get('start', '0')
+    if is_int(start):
+        start = int(start)
+    else:
+        start = 0
+
+    entries = get_client().get_last(end, start=start, only_published=only_published)
+    return render_template('editlist.html', entries=entries, start=start, end=end, perpage=50)
 
 
-@crud.route('/edit/<string:id>', methods=['GET', 'POST'])
+@crud.route('/edit/<path:id>', methods=['GET', 'POST'])
 def edit(id):
     entry = get_client().get_by_id(id)
     if entry:

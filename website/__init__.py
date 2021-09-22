@@ -35,6 +35,6 @@ def create_app(config, debug=False, testing=False, config_overrides=None, make_d
     # Register the Bookshelf CRUD blueprint.
     app.register_blueprint(crud)
 
-    app.jinja_env.globals.update(fix_dates=fix_dates)
+    app.jinja_env.globals.update(fix_dates=fix_dates, max=max)
 
     return app

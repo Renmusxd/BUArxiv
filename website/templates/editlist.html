@@ -5,6 +5,12 @@
     <title>Edit Entry</title>
 </head>
 <body>
+    <div style="display: flex; margin: 10px 10px 10px 10px;">
+        {% if start > 0 %}
+            <a style="margin-left: 0; margin-right: auto;" href="{{ url_for('crud.listedits', start=max(0, start - perpage), end=max(perpage, start))  }}">{{ max(0, start - perpage) }} > {{ max(perpage, start)}}</a>
+        {% endif %}
+        <a style="margin-right: 0; margin-left: auto;" href="{{ url_for('crud.listedits', start=end, end=end + perpage)  }}">{{ end }} > {{ end + perpage }}</a>
+    </div>
     {% for entry in entries %}
         <div style="padding: 5px 5px 5px 5px; outline: 1px solid black">
             <a href="{{ url_for('crud.edit', id=entry.id)  }}"><h3>{{ entry.title if entry.title else entry.id }}</h3></a>

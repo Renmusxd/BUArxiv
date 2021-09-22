@@ -58,7 +58,7 @@ class SQLClient(object):
         arxivsql = ArxivEntry.query.get(id)
         return arxivsql
 
-    def get_last(self, m, n=0, only_published=False):
+    def get_last(self, end, start=0, only_published=False):
         entries = ArxivEntry.query\
             .filter(ArxivEntry.hidden.is_(False))\
             .order_by(ArxivEntry.timestamp.desc())
@@ -66,8 +66,8 @@ class SQLClient(object):
         if only_published:
             entries = entries.filter(db.func.coalesce(ArxivEntry.journal_ref, '') != '')
 
-        entries = entries.limit(m).all()
-        return entries[n:]
+        entries = entries.limit(end).all()
+        return entries[start:]
 
     def get_in_previous_days(self, days, only_published=False):
         current_time = datetime.datetime.utcnow()

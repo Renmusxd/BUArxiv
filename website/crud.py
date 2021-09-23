@@ -128,7 +128,7 @@ def listedits():
 
     filters = parse_filters()
     entries = get_client().get_last(end, start=start, **filters)
-    return render_template('editlist.html', entries=entries, start=start, end=end, perpage=50)
+    return render_template('editlist.html', entries=entries, start=start, end=end, perpage=50, filters=filters)
 
 
 @crud.route('/edit/<path:id>', methods=['GET', 'POST'])

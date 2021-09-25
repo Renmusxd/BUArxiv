@@ -89,7 +89,6 @@ def feed(num):
         return "Not found", 404
     else:
         n, m = res
-
     filters = parse_filters()
     entries = get_client().get_last(m, start=n, **filters)
     response = jsonify([

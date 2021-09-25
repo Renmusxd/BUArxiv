@@ -1,5 +1,6 @@
 **.pyc
 *.db
+*.db.bak
 .idea
 **.png
 **/.DS_Store

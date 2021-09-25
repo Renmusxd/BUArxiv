@@ -121,19 +121,25 @@ class SQLClient(object):
                    summary=None, autoupdate=False, image_url=None, tags=None,
                    journal_ref=None, doi=None,
                    unstructured=None, authors=None, hidden=False):
+        def none_if_empty(s):
+            if s:
+                return s
+            else:
+                return None
+
         entry = self.get_by_id(id)
-        entry.url = url
-        entry.title = title
-        entry.authors = authors
-        entry.abstract = abstract
-        entry.summary = summary
-        entry.image_url = image_url
+        entry.url = none_if_empty(url)
+        entry.title = none_if_empty(title)
+        entry.authors = none_if_empty(authors)
+        entry.abstract = none_if_empty(abstract)
+        entry.summary = none_if_empty(summary)
+        entry.image_url = none_if_empty(image_url)
+        entry.tags = none_if_empty(tags)
+        entry.unstructured = none_if_empty(unstructured)
+        entry.journal_ref = none_if_empty(journal_ref)
+        entry.doi = none_if_empty(doi)
         entry.autoupdate = autoupdate
-        entry.tags = tags
-        entry.unstructured = unstructured
         entry.hidden = hidden
-        entry.journal_ref = journal_ref
-        entry.doi = doi
         db.session.commit()
 
 

@@ -17,7 +17,15 @@
 <script src="https://cdn.jsdelivr.net/npm/katex@0.13.18/dist/contrib/auto-render.min.js" integrity="sha384-vZTG03m+2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl" crossorigin="anonymous"></script>
 <script>
   function run(x,y) {
-    let myurl = 'https://physics.bu.edu/cmt-arxiv/feed/' + x + '-' + y;
+    // Check for queryparams like ?only_published=True
+    const wurl = window.location.search;
+    var wurl_split = wurl.split('?');
+    var queryString = (wurl_split.length === 2) ? wurl.split('?')[1] : '';
+    if (queryString !== '') {
+        queryString = "?" + queryString;
+    }
+
+    let myurl = 'https://physics.bu.edu/cmt-arxiv/feed/' + x + '-' + y + queryString;
     console.log('Looking for '+myurl);
     d3.json(myurl,  function(error, data) {
       var div = d3.select('.list');

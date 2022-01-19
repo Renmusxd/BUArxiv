@@ -26,14 +26,18 @@ def index():
     return send_file('static/index.html')
 
 
+@crud.route('/help')
 @crud.route('/how-do-I-edit')
+@crud.route('/how-do-i-edit')
 def edit_instructions():
     """Return a friendly HTTP greeting."""
     return send_file('static/instructions.html')
 
+
 @crud.route('static/<path:path>')
 def send_static(path):
     return send_from_directory('static', path=path)
+
 
 def is_int(s):
     try:
@@ -41,6 +45,7 @@ def is_int(s):
         return True
     except ValueError:
         return False
+
 
 def parse_possible_range(numstr):
     if is_int(numstr):
@@ -54,6 +59,7 @@ def parse_possible_range(numstr):
             m = int(m)
             return n, m
     return None
+
 
 def parse_filters():
     # Get filters
@@ -79,6 +85,7 @@ def parse_filters():
         'journal_includes': journal_includes,
         'journal_excludes': journal_excludes,
     }
+
 
 @crud.route('/feed', defaults={'num': '10'}, methods=['GET'])
 @crud.route('/feed/', defaults={'num': '10'}, methods=['GET'])
